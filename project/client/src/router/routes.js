@@ -11,22 +11,22 @@ const routes = [
     ]
   },
   {
-    path: '/Login',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      {
-        path: '',
-        component: () => import('pages/Login.vue')
-      }
-    ]
-  },
-  {
     path: '/About',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: '',
         component: () => import('pages/About.vue')
+      }
+    ]
+  },
+  {
+    path: '/Register',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/Register.vue')
       }
     ]
   },

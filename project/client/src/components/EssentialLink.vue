@@ -42,7 +42,7 @@ export default {
 
     icon: {
       type: String,
-      default: ''
+      default: 'primary'
     }
   }
 }

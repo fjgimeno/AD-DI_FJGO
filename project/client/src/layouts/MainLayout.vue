@@ -45,15 +45,21 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksData = [
   {
-    title: 'Login',
+    title: 'Iniciar Sesió',
     caption: 'Anar al login',
-    icon: 'school',
-    link: '#/Login'
+    icon: 'login',
+    link: '#/'
+  },
+  {
+    title: 'Registrarse',
+    caption: 'Anar a informació de la app',
+    icon: 'login',
+    link: '#/Register'
   },
   {
     title: 'About',
     caption: 'Anar a informació de la app',
-    icon: 'school',
+    icon: 'contact_support',
     link: '#/About'
   }
 ]
