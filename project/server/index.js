@@ -92,26 +92,41 @@ app.post('/register', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-    let querySearchId = "select id from users where username = '" + req.body["username"] + "'";
-    let querySearchDni = "select count(dni) from dni_profe where dni = '" + req.body["dni"] + "'";
-    let querySearchUser = "select id, role from users where username = '" + req.body["username"] + "' and password = '" + req.body["password"] + "'";
-    let role = ""
+    let queryValidateUser = "select id from users where username = '" + req.body["username"] + "' and password = '" + req.body["password"] + "'";
     if (req.body.hasOwnProperty("username") && req.body.hasOwnProperty("password")) {
-        //Comproba que el usuari no existeix, i si així es, continúa amb els "inserts"
-        connection.query(querySearchUser, function (err, rows, fields) {
-            if (rows[0]["count(*)"] == 1) { 
-                connection.query(querySearchId, function (err, rows, fields) {
-                    let id = rows['id'];
-                    let querySearchDni = "select dni from dni_profe where dni = '" + req.body["dni"] + "'";
-
+        //Comproba que el usuari es valid, en cas afirmatiu, busca el id del usuari a la taula professors per saber si es un profe o no,
+        //Acte seguit, retorna un token jwt o un altre depenent del resultat.
+        connection.query(queryValidateUser, function (err, rows, fields) {
+            if (rows != undefined) {
+                let id = rows[0]['id'];
+                let querySearchRole = "select count(*) from professor where id_professor = '" + id + "'";
+                connection.query(querySearchRole, function (err, rows, fields) {
+                    if (err) throw err;
+                    if (rows[0]["count(*)"] == 1) {
+                        var textJson = '{"user_id": ' + id + ',"username": "' + req.body["username"] + '","role": "profe"}';
+                        var objJson = JSON.parse(textJson);
+                        // expires after half and hour (6400 seconds = 120 minutes = 2 hours)
+                        let token = jwt.sign(objJson, TOKEN_SECRET, { expiresIn: '6400s' });
+                        res.json(token);
+                        console.log(jwt.decode(token, TOKEN_SECRET));
+                    } else {
+                        var textJson = '{"user_id": ' + id + ',"username": "' + req.body["username"] + '","role": "alumne"}';
+                        var objJson = JSON.parse(textJson);
+                        // expires after half and hour (6400 seconds = 120 minutes = 2 hours)
+                        let token = jwt.sign(objJson, TOKEN_SECRET, { expiresIn: '6400s' });
+                        res.json(token);
+                        console.log(jwt.decode(token, TOKEN_SECRET));
+                    }
                 });
             } else {
-                var textJson = '{"reg_error":"user already exists"}';
+                var textJson = '{"log_error":"user does not exists or password is incorrect"}';
                 var objJson = JSON.parse(textJson);
                 res.json(objJson);
             }
         })
     } else {
-        res.send("Objecte json invalid");
+        var textJson = '{"log_error":"Incompatible json was received"}';
+        var objJson = JSON.parse(textJson);
+        res.json(objJson);
     }
 });
