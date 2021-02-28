@@ -74,6 +74,14 @@ export default {
     }
   },
   computed: {
+    drawerState: {
+      get () {
+        return this.$store.state.showcase.drawerState
+      },
+      set (val) {
+        this.$store.commit('showcase/updateDrawerState', val)
+      }
+    },
     dataActual () {
       var dateAct = new Date()
       var strDia
@@ -100,6 +108,8 @@ export default {
         case 7:
           strDia = 'Diumenge'
           break
+        default:
+          strDia = 'test'
       }
       switch (dateAct.getMonth()) {
         case 1:

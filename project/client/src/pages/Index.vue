@@ -8,14 +8,8 @@
         <q-card square bordered class="q-pa-lg shadow-1">
           <q-card-section>
             <q-form class="q-gutter-md">
-              <q-input
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'Aquest camp no pot estar buit']"
-              square filled clearable v-model="usuari" type="email" label="Usuari" />
-              <q-input
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'Aquest camp no pot estar buit']"
-              square filled clearable v-model="contrasenya" type="password" label="Contrasenya" />
+              <q-input square filled clearable v-model="usuari" type="email" label="Usuari" />
+              <q-input square filled clearable v-model="contrasenya" type="password" label="Contrasenya" />
             </q-form>
           </q-card-section>
           <q-card-actions class="q-px-md">
